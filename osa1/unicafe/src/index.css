@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
+body {
+  text-align: center;
+  background-color: #a29aff;
+  color: white;
+  font-family: 'Source Sans Pro';
+  font-size: 5vh;
+}
+
+table {
+  margin: 0 auto;
+}
+
+th {
+  text-align: right;
+  margin: 2rem;
+}
+
+td {
+  text-align: left;
+  margin: 2rem;
+}
+
+button {
+  width: 7rem;
+  height: 2rem;
+  border: 2px solid #000;
+  margin: 0.5rem;
+  border-radius: 2rem;
+}
+
+button:hover {
+  cursor: pointer; 
+}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import AddContact from './components/AddContact'
 import Filter from './components/Filter'
@@ -11,9 +11,22 @@ const App = () => {
   const [ persons, setPersons] = useState([
     { name: '',
       number: '',
-      id: Math.random * 10
+      id: Math.random * 1000
     }
   ])
+
+  const personsHook = () => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }
+
+  useEffect(personsHook, [])
+
+
 
   return (
     <div>

@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
-import AddContact from './components/AddContact';
-import Filter from './components/Filter';
-import Display from './components/Display';
+import React, {useState} from 'react'
+import axios from 'axios'
+import AddContact from './components/AddContact'
+import Filter from './components/Filter'
+import Display from './components/Display'
 
 
 const App = () => {

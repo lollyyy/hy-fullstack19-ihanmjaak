@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react'
+import personService from '../services/personService'
 
-const AddContact = ({persons, setPersons}) => {
-
+const AddContact = ({persons, setPersons, messages, setMessages}) => {
 
   //Define state for input field
   const [ newName, setNewName ] = useState('')
@@ -26,17 +26,52 @@ const AddContact = ({persons, setPersons}) => {
       name: newName,
       number: newNumber,
       date: new Date().toISOString(),
-      id: persons.length + 1,
+    }
+
+    //Add contacts to JSON server
+    const addToServer = () => {
+      personService
+        .create(contactObject)
+        .then(returnedPerson => {
+
+          setPersons(persons.concat(returnedPerson))
+          setMessages(`${newName} lisätty luetteloon`)
+
+          setNewName('')
+          setNewNumber('')
+
+          setTimeout(() => {
+            setMessages(null)
+          }, 1500)
+        })
+    }
+
+    const replaceNumber = found => {
+      window.confirm(`${newName} on jo luettelossa, korvataanko
+                      olemassa oleva numero?`)
+      ? personService
+        .update(found.id, contactObject)
+        .then(returnedPerson => {
+
+          setMessages(`Numero päivitetty yhteystiedolle ${newName}`)
+          setNewName('')
+          setNewNumber('')
+          setPersons(persons)
+        })
+      : console.log('Contact not updated')
     }
 
     //Check for duplicates
-    const duplicateValue = persons.map(person => person.name)
-    duplicateValue.includes(newName)
-    ? alert(`${newName} on jo luettelossa`)
-    : setPersons(persons.concat(contactObject))
-      setNewName('')
-      setNewNumber('')
+    function duplicateValue(person) {
+      return person.name === newName
     }
+
+    const found = persons.find(duplicateValue)
+
+    persons.find(duplicateValue)
+    ? replaceNumber(found)
+    : addToServer()
+  }
 
   return (
 

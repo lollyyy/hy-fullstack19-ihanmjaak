@@ -52,6 +52,7 @@ const App = () => {
       <h2>Numerot</h2>
       <Display
         persons={persons} setPersons={setPersons}
+        messages={messages} setMessages={setMessages}
       />
 
     </div>

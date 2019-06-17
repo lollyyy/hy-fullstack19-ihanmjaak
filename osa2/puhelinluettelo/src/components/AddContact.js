@@ -52,11 +52,10 @@ const AddContact = ({persons, setPersons, messages, setMessages}) => {
       ? personService
         .update(found.id, contactObject)
         .then(returnedPerson => {
-
+          
           setMessages(`Numero päivitetty yhteystiedolle ${newName}`)
           setNewName('')
           setNewNumber('')
-          setPersons(persons)
         })
       : console.log('Contact not updated')
     }

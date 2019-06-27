@@ -52,7 +52,8 @@ const AddContact = ({persons, setPersons, messages, setMessages}) => {
       ? personService
         .update(found.id, contactObject)
         .then(returnedPerson => {
-          
+
+          setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
           setMessages(`Numero päivitetty yhteystiedolle ${newName}`)
           setNewName('')
           setNewNumber('')

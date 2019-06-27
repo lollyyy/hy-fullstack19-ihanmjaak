@@ -6,7 +6,8 @@ const Display = ({persons, setPersons, messages, setMessages}) => {
 const names = persons.map(person =>
      <li key={person.id}>
        {person.name} <em key={person.number}>{person.number}</em>
-       <RemoveContact id={person.id} name={person.name}
+       <RemoveContact persons={persons} setPersons={setPersons}
+                      id={person.id} name={person.name}
                       messages={messages} setMessages={setMessages}/>
      </li>
    )

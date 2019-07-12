@@ -44,6 +44,9 @@ const AddContact = ({persons, setPersons, messages, setMessages}) => {
             setMessages(null)
           }, 1500)
         })
+        .catch(error => {
+          setMessages(error.response.data.error)
+        })
     }
 
     const replaceNumber = found => {

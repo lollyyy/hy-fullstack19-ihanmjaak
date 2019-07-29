@@ -7,7 +7,7 @@ const listHelper = require('../utils/list_helper')
 const Blog = require('../models/blog')
 
 beforeEach(async () => {
-  await Blog.remove({})
+  await Blog.deleteMany({})
 
   const blogObjects = listHelper.initialBlogs
     .map(blog => new Blog(blog))
@@ -23,16 +23,6 @@ describe('total likes', () => {
   test('of a bigger list is calculated right', () => {
     const expected = listHelper.initialBlogs.reduce((sum, blog) => sum + blog.likes, 0)
     expect(listHelper.totalLikes(listHelper.initialBlogs)).toBe(expected)
-  })
-})
-
-describe('favorite blogs', () => {
-  console.log(listHelper.favoriteBlog(listHelper.initialBlogs))
-  test('of most likes', () => {
-    const expected = listHelper.initialBlogs.reduce((most, blog) => {
-      return (most.likes || 0) > blog.likes ? most : blog
-    })
-    expect(listHelper.favoriteBlog(listHelper.initialBlogs)).toContainEqual(expected)
   })
 })
 
@@ -53,7 +43,7 @@ describe('api tests', () => {
   test('of identifier is id', async () => {
     const res = await api.get('/api/blogs')
 
-    expect(res.body.id).toBeDefined()
+    expect(res.body[0].id).toBeDefined()
   })
 
   test('a valid blog can be added', async () => {
@@ -78,11 +68,22 @@ describe('api tests', () => {
     )
   })
 
-  test('set likes to 0 if not defined', async () => {
-    const blogs = await api.get('/api/blogs')
-    const likes = blogs.map(blog => blog.likes)
+  test('a blog with valid id can be removed', async () => {
+    const blogsAtStart = await listHelper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
 
-    expect(likes).toBe()
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await listHelper.blogsInDb()
+
+    expect(blogsAtEnd.length).toBe(
+      listHelper.initialBlogs.length - 1
+    )
+
+    const contents = blogsAtEnd.map(r => r.title)
+    expect(contents).not.toContain(blogToDelete.title)
   })
 })
 
